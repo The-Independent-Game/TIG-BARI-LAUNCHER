@@ -1,5 +1,7 @@
 from machine import Pin, I2C
 import time
+import tig_00_bari
+import tig_01_bari
 
 def check_i2c_device(address=0x3c):
     """
@@ -36,7 +38,6 @@ def main():
         print("Display I2C rilevato all'indirizzo 0x3c")
         print("Caricamento tig-00-bari.py...")
         try:
-            import tig_00_bari
             tig_00_bari.start()
         except ImportError:
             print("ERRORE: File tig-00-bari.py non trovato!")
@@ -44,7 +45,6 @@ def main():
         print("Display I2C NON rilevato")
         print("Caricamento tig-01-bari.py...")
         try:
-            import tig_01_bari
             tig_01_bari.start()
         except ImportError:
             print("ERRORE: File tig-01-bari.py non trovato!")
