@@ -161,6 +161,10 @@ def main():
         if download_file(github_url, "tig_00_bari.new.py"):
             # Confronta e aggiorna se necessario
             update_file_if_changed("tig_00_bari.py", "tig_00_bari.new.py")
+
+        github_url = "https://raw.githubusercontent.com/The-Independent-Game/TIG-01-BARI/main/tig_01_bari.py"
+        if download_file(github_url, "tig_01_bari.new.py"):
+            update_file_if_changed("tig_01_bari.py", "tig_01_bari.new.py")
     else:
         print("Continuo senza aggiornamento da GitHub")
 
