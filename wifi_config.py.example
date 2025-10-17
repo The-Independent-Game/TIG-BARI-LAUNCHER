@@ -1,8 +1,10 @@
 # WiFi Configuration
-# Configurazione credenziali WiFi per Raspberry Pi Pico 2 W
 
-WIFI_SSID = "your_wifi_ssid"
-WIFI_PASSWORD = "your_wifi_password"
+WIFI_NETWORKS = [
+    {"ssid": "SSID1", "password": "PWD1"},
+    # other networks here
+    # {"ssid": "SSID2", "password": "PWD2"},
+]
 
-# Timeout per la connessione WiFi (secondi)
+# Connection Timeout (seconds)
 WIFI_TIMEOUT = 10

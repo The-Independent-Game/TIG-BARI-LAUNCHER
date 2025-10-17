@@ -9,34 +9,37 @@ import uhashlib
 DEV_MODE = False
 
 def connect_wifi():
-    """
-    Connette il Pico W al WiFi usando le credenziali da wifi_config.py
-    Ritorna True se connesso, False altrimenti
-    """
-    print("Connessione WiFi in corso...")
+    print("WiFi Connections...")
     wlan = network.WLAN(network.STA_IF)
     wlan.active(True)
 
     if wlan.isconnected():
-        print("WiFi già connesso")
-        print(f"IP: {wlan.ifconfig()[0]}")
+        print(f"WiFi already connected IP: {wlan.ifconfig()[0]}")
         return True
 
-    print(f"Connessione a {wifi_config.WIFI_SSID}...")
-    wlan.connect(wifi_config.WIFI_SSID, wifi_config.WIFI_PASSWORD)
+    for network_config in wifi_config.WIFI_NETWORKS:
+        ssid = network_config["ssid"]
+        password = network_config["password"]
 
-    # Attendi connessione con timeout
-    timeout = wifi_config.WIFI_TIMEOUT
-    while timeout > 0:
-        if wlan.isconnected():
-            print("WiFi connesso!")
-            print(f"IP: {wlan.ifconfig()[0]}")
-            return True
+        print(f"Trying to connect to {ssid}...")
+        wlan.connect(ssid, password)
+
+        timeout = wifi_config.WIFI_TIMEOUT
+        while timeout > 0:
+            if wlan.isconnected():
+                print(f"WiFi connected IP: {wlan.ifconfig()[0]}")
+                return True
+            time.sleep(1)
+            timeout -= 1
+            
+            print(f"Attendo connessione... ({timeout}s)")
+
+
+        print(f"Connection timeout {ssid}")
+        wlan.disconnect()
         time.sleep(1)
-        timeout -= 1
-        print(f"Attendo connessione... ({timeout}s)")
 
-    print("Timeout connessione WiFi")
+    print("can't connect to WiFi")
     return False
 
 def md5sum(filename):
@@ -151,27 +154,23 @@ def check_i2c_device(address=0x3c):
         return False
 
 def main():
-    """
-    Funzione principale: decide quale file eseguire
-    """
-    print("TIG SAVONA LAUNCHER - Avvio...")
+    print("TIG LAUNCHER ")
 
     online_mode = False
-    # Prova a connettersi al WiFi e scaricare il file aggiornato
     online_mode = connect_wifi()
     if not DEV_MODE:
         if online_mode:
-            # URL del file da scaricare (raw content da GitHub)
+            # update TIG00
             github_url = "https://raw.githubusercontent.com/The-Independent-Game/TIG-00-BARI/main/tig_00_bari.py"
             if download_file(github_url, "tig_00_bari.new.py"):
-                # Confronta e aggiorna se necessario
                 update_file_if_changed("tig_00_bari.py", "tig_00_bari.new.py")
 
+            # update TIG01
             github_url = "https://raw.githubusercontent.com/The-Independent-Game/TIG-01-BARI/main/tig_01_bari.py"
             if download_file(github_url, "tig_01_bari.new.py"):
                 update_file_if_changed("tig_01_bari.py", "tig_01_bari.new.py")
     else:
-        print("Continuo senza aggiornamento da GitHub")
+        print("continue without updates")
 
     # Attendi un momento per stabilizzare l'I2C
     time.sleep(0.5)
