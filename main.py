@@ -6,6 +6,8 @@ import wifi_config
 import os
 import uhashlib
 
+DEV_MODE = False
+
 def connect_wifi():
     """
     Connette il Pico W al WiFi usando le credenziali da wifi_config.py
@@ -155,7 +157,7 @@ def main():
     print("TIG SAVONA LAUNCHER - Avvio...")
 
     # Prova a connettersi al WiFi e scaricare il file aggiornato
-    if connect_wifi():
+    if not DEV_MODE and connect_wifi():
         # URL del file da scaricare (raw content da GitHub)
         github_url = "https://raw.githubusercontent.com/The-Independent-Game/TIG-00-BARI/main/tig_00_bari.py"
         if download_file(github_url, "tig_00_bari.new.py"):
