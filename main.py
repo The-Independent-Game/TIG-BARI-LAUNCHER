@@ -32,12 +32,12 @@ def connect_wifi():
             time.sleep(1)
             timeout -= 1
             
-            print(f"Attendo connessione... ({timeout}s)")
+            print(f"Wait connection... ({timeout}s)")
 
 
         print(f"Connection timeout {ssid}")
         wlan.disconnect()
-        time.sleep(1)
+        time.sleep(4)
 
     print("can't connect to WiFi")
     return False
