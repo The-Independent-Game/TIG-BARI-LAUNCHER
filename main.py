@@ -156,17 +156,20 @@ def main():
     """
     print("TIG SAVONA LAUNCHER - Avvio...")
 
+    online_mode = False
     # Prova a connettersi al WiFi e scaricare il file aggiornato
-    if not DEV_MODE and connect_wifi():
-        # URL del file da scaricare (raw content da GitHub)
-        github_url = "https://raw.githubusercontent.com/The-Independent-Game/TIG-00-BARI/main/tig_00_bari.py"
-        if download_file(github_url, "tig_00_bari.new.py"):
-            # Confronta e aggiorna se necessario
-            update_file_if_changed("tig_00_bari.py", "tig_00_bari.new.py")
+    if not DEV_MODE:
+        online_mode = connect_wifi()
+        if online_mode:
+            # URL del file da scaricare (raw content da GitHub)
+            github_url = "https://raw.githubusercontent.com/The-Independent-Game/TIG-00-BARI/main/tig_00_bari.py"
+            if download_file(github_url, "tig_00_bari.new.py"):
+                # Confronta e aggiorna se necessario
+                update_file_if_changed("tig_00_bari.py", "tig_00_bari.new.py")
 
-        github_url = "https://raw.githubusercontent.com/The-Independent-Game/TIG-01-BARI/main/tig_01_bari.py"
-        if download_file(github_url, "tig_01_bari.new.py"):
-            update_file_if_changed("tig_01_bari.py", "tig_01_bari.new.py")
+            github_url = "https://raw.githubusercontent.com/The-Independent-Game/TIG-01-BARI/main/tig_01_bari.py"
+            if download_file(github_url, "tig_01_bari.new.py"):
+                update_file_if_changed("tig_01_bari.py", "tig_01_bari.new.py")
     else:
         print("Continuo senza aggiornamento da GitHub")
 
@@ -179,7 +182,7 @@ def main():
         print("Caricamento tig-00-bari.py...")
         try:
             import tig_00_bari
-            tig_00_bari.start()
+            tig_00_bari.start(online_mode)
         except ImportError:
             print("ERRORE: File tig-00-bari.py non trovato!")
     else:
@@ -187,7 +190,7 @@ def main():
         print("Caricamento tig-01-bari.py...")
         try:
             import tig_01_bari
-            tig_01_bari.start()
+            tig_01_bari.start(online_mode)
         except ImportError:
             print("ERRORE: File tig-01-bari.py non trovato!")
 
