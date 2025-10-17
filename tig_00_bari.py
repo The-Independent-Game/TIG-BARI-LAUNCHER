@@ -5,7 +5,7 @@ class TIG00:
     def go(self):
         print("00")
 
-def start():
+def start(online_mode):
     game = TIG00()
     game.go()
     
