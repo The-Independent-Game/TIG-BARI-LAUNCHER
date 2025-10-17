@@ -158,8 +158,8 @@ def main():
 
     online_mode = False
     # Prova a connettersi al WiFi e scaricare il file aggiornato
+    online_mode = connect_wifi()
     if not DEV_MODE:
-        online_mode = connect_wifi()
         if online_mode:
             # URL del file da scaricare (raw content da GitHub)
             github_url = "https://raw.githubusercontent.com/The-Independent-Game/TIG-00-BARI/main/tig_00_bari.py"
